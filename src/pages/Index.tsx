@@ -32,6 +32,12 @@ const Index = () => {
     setIsLoggedIn(false);
     setUser(null);
   };
+
+  const handleProfileUpdate = (updatedUser) => {
+    // Update the user state with the updated profile
+    setUser(updatedUser);
+  };
+
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -46,7 +52,7 @@ const Index = () => {
           </div>
         </div>
       ) : (
-        <Dashboard user={user} onLogout={handleLogout} />
+        <Dashboard user={user} onLogout={handleLogout} onProfileUpdate={handleProfileUpdate} />
       )}
     </div>
   );

@@ -5,15 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user, onProfileUpdate }) => {
   const [profile, setProfile] = useState({
     name: user.name,
     email: user.email,
     department: user.department,
     role: user.role,
-    phone: "555-123-4567", // Mock data
-    address: "123 Medical Center Dr",
-    emergencyContact: "Jane Doe (555-987-6543)"
+    phone: user.phone || "555-123-4567", // Use existing data or fallback
+    address: user.address || "123 Medical Center Dr",
+    emergencyContact: user.emergencyContact || "Jane Doe (555-987-6543)"
   });
   
   const [isEditing, setIsEditing] = useState(false);
@@ -29,6 +29,22 @@ const UserProfile = ({ user }) => {
   
   const handleSave = () => {
     // In a real app, this would be an API call to update the user profile
+    const updatedUser = {
+      ...user,
+      name: profile.name,
+      phone: profile.phone,
+      address: profile.address,
+      emergencyContact: profile.emergencyContact
+    };
+    
+    // Update localStorage
+    localStorage.setItem("hmsUser", JSON.stringify(updatedUser));
+    
+    // Call the parent's update function if provided
+    if (onProfileUpdate) {
+      onProfileUpdate(updatedUser);
+    }
+    
     setIsEditing(false);
     toast({
       title: "Profile updated",

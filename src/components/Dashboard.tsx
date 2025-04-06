@@ -1,4 +1,4 @@
-
+// Dashboard.tsx
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -21,7 +21,7 @@ import Billing from "@/components/Billing";
 import DoctorDashboard from "@/components/DoctorDashboard";
 import UserProfile from "@/components/UserProfile";
 
-const Dashboard = ({ user, onLogout }) => {
+const Dashboard = ({ user, onLogout, onProfileUpdate }) => {
   const [activeTab, setActiveTab] = useState("dashboard");
   
   const renderContent = () => {
@@ -41,7 +41,7 @@ const Dashboard = ({ user, onLogout }) => {
       case "doctor":
         return <DoctorDashboard user={user} />;
       case "profile":
-        return <UserProfile user={user} />;
+        return <UserProfile user={user} onProfileUpdate={onProfileUpdate} />;
       default:
         return <Analytics user={user} />;
     }
