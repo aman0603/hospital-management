@@ -1,6 +1,6 @@
-# Health Nexus Backend
+# Health Nexus 
 
-Health Nexus Backend is a modern healthcare management system built with React, TypeScript, and TailwindCSS. It provides a user-friendly interface for managing patients, staff, appointments, billing, and more.
+Health Nexus is a modern healthcare management system built with React, TypeScript, and TailwindCSS. It provides a user-friendly interface for managing patients, staff, appointments, billing, and more.
 
 ## Features
 
