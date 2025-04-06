@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   Table, 
   TableBody, 
@@ -16,6 +16,55 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
+
+// BedAssignmentForm component extracted to improve readability
+const BedAssignmentForm = ({ onSave, onCancel }) => {
+  const [patientName, setPatientName] = useState("");
+  const [patients] = useState([
+    { id: "P1001", name: "James Wilson" },
+    { id: "P1002", name: "Sarah Johnson" },
+    { id: "P1003", name: "Robert Brown" },
+    { id: "P1004", name: "Emily Davis" },
+    { id: "P1005", name: "Michael Thompson" }
+  ]);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(patientName);
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">
+          Select Patient
+        </label>
+        <select 
+          className="w-full p-2 border rounded-md" 
+          value={patientName} 
+          onChange={(e) => setPatientName(e.target.value)}
+          required
+        >
+          <option value="">-- Select a patient --</option>
+          {patients.map(patient => (
+            <option key={patient.id} value={patient.name}>
+              {patient.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      
+      <div className="flex justify-end space-x-2">
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={!patientName}>
+          Assign Bed
+        </Button>
+      </div>
+    </form>
+  );
+};
 
 const Wards = ({ user }) => {
   const [wards, setWards] = useState([]);
@@ -164,7 +213,7 @@ const Wards = ({ user }) => {
   });
   
   // Determine if user can manage beds
-  const canManageBeds = ["admin", "nurse"].includes(user.role);
+  const canManageBeds = ["admin", "nurse"].includes(user?.role || "");
   
   if (isLoading) {
     return (
@@ -323,54 +372,6 @@ const Wards = ({ user }) => {
         </DialogContent>
       </Dialog>
     </div>
-  );
-};
-
-const BedAssignmentForm = ({ onSave, onCancel }) => {
-  const [patientName, setPatientName] = useState("");
-  const [patients, setPatients] = useState([
-    { id: "P1001", name: "James Wilson" },
-    { id: "P1002", name: "Sarah Johnson" },
-    { id: "P1003", name: "Robert Brown" },
-    { id: "P1004", name: "Emily Davis" },
-    { id: "P1005", name: "Michael Thompson" }
-  ]);
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(patientName);
-  };
-  
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">
-          Select Patient
-        </label>
-        <select 
-          className="w-full p-2 border rounded-md" 
-          value={patientName} 
-          onChange={(e) => setPatientName(e.target.value)}
-          required
-        >
-          <option value="">-- Select a patient --</option>
-          {patients.map(patient => (
-            <option key={patient.id} value={patient.name}>
-              {patient.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      
-      <div className="flex justify-end space-x-2">
-        <Button type="button" variant="outline" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit" disabled={!patientName}>
-          Assign Bed
-        </Button>
-      </div>
-    </form>
   );
 };
 

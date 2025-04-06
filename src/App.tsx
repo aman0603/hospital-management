@@ -8,7 +8,7 @@ import { useState } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
-const App = () => {
+function App() {
   // Create a client inside the component function
   const [queryClient] = useState(() => new QueryClient());
 
@@ -27,6 +27,6 @@ const App = () => {
       </TooltipProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;
